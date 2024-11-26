@@ -135,9 +135,11 @@ const DASHBOARD_COLUMNS_TO_FETCH = [
 function DashboardList(props: DashboardListProps) {
   const { addDangerToast, addSuccessToast, user } = props;
 
-  const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
+  const { roles, goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
+
   const canReadTag = findPermission('can_read', 'Tag', roles);
 
   const {
@@ -384,6 +386,7 @@ function DashboardList(props: DashboardListProps) {
         accessor: 'owners',
         disableSortBy: true,
         size: 'xl',
+        hidden: goldenDomain
       },
       {
         Cell: ({
@@ -698,9 +701,20 @@ function DashboardList(props: DashboardListProps) {
       onClick: openDashboardImportModal,
     });
   }
+  
+  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  let subMenu = null;
+  let dashboardFilters: Filters = [];
+  let dashboardRenderCard: (dashboard: Dashboard) => JSX.Element;
+  if (!goldenDomain) {
+    subMenu = <SubMenu name={t('Dashboards')} buttons={subMenuButtons} />
+    dashboardFilters = filters;
+    dashboardRenderCard = renderCard;
+  }
+
   return (
     <>
-      <SubMenu name={t('Dashboards')} buttons={subMenuButtons} />
+      {subMenu}
       <ConfirmStatusChange
         title={t('Please confirm')}
         description={t(
@@ -771,7 +785,7 @@ function DashboardList(props: DashboardListProps) {
                 disableBulkSelect={toggleBulkSelect}
                 fetchData={fetchData}
                 refreshData={refreshData}
-                filters={filters}
+                filters={dashboardFilters}
                 initialSort={initialSort}
                 loading={loading}
                 pageSize={PAGE_SIZE}
@@ -782,7 +796,7 @@ function DashboardList(props: DashboardListProps) {
                     ? userKey.thumbnails
                     : isFeatureEnabled(FeatureFlag.Thumbnails)
                 }
-                renderCard={renderCard}
+                renderCard={dashboardRenderCard}
                 defaultViewMode={
                   isFeatureEnabled(FeatureFlag.ListviewsDefaultCardView)
                     ? 'card'

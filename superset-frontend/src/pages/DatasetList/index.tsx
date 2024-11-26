@@ -65,6 +65,7 @@ import DuplicateDatasetModal from 'src/features/datasets/DuplicateDatasetModal';
 import { useSelector } from 'react-redux';
 import { ModifiedInfo } from 'src/components/AuditInfo';
 import { QueryObjectColumns } from 'src/views/CRUD/types';
+import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 
 const extensionsRegistry = getExtensionsRegistry();
 const DatasetDeleteRelatedExtension = extensionsRegistry.get(
@@ -139,6 +140,12 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   addSuccessToast,
   user,
 }) => {
+
+  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
+  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+    state => state.user,
+  );
+
   const history = useHistory();
   const {
     state: {
@@ -370,11 +377,13 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         Header: t('Database'),
         accessor: 'database.database_name',
         size: 'lg',
+        hidden: goldenDomain,
       },
       {
         Header: t('Schema'),
         accessor: 'schema',
         size: 'lg',
+        hidden: goldenDomain,
       },
       {
         accessor: 'database',
@@ -391,6 +400,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         id: 'owners',
         disableSortBy: true,
         size: 'lg',
+        hidden: goldenDomain,
       },
       {
         Cell: ({
@@ -738,9 +748,17 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     );
   };
 
+  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  let subMenu = null;
+  let datasetFilters: Filters = [];
+  if (!goldenDomain) {
+    subMenu = <SubMenu {...menuData} />
+    datasetFilters = filterTypes;
+  }
+  
   return (
     <>
-      <SubMenu {...menuData} />
+      {subMenu}
       {datasetCurrentlyDeleting && (
         <DeleteModal
           description={
@@ -883,7 +901,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
               count={datasetCount}
               pageSize={PAGE_SIZE}
               fetchData={fetchData}
-              filters={filterTypes}
+              filters={datasetFilters}
               loading={loading}
               initialSort={initialSort}
               bulkActions={bulkActions}

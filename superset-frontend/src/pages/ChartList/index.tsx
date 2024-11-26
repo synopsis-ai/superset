@@ -180,7 +180,9 @@ function ChartList(props: ChartListProps) {
   } = useListViewResource<Chart>('chart', t('chart'), addDangerToast);
 
   const chartIds = useMemo(() => charts.map(c => c.id), [charts]);
-  const { roles } = useSelector<any, UserWithPermissionsAndRoles>(
+  
+  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
+  const { roles, goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
   const canReadTag = findPermission('can_read', 'Tag', roles);
@@ -430,6 +432,7 @@ function ChartList(props: ChartListProps) {
         accessor: 'owners',
         disableSortBy: true,
         size: 'xl',
+        hidden: goldenDomain
       },
       {
         Cell: ({
@@ -784,9 +787,19 @@ function ChartList(props: ChartListProps) {
     });
   }
 
+  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  let subMenu = null;
+  let chartFilters: Filters = [];
+  let chartRenderCard: (chart: Chart) => JSX.Element;
+  if (!goldenDomain) {
+    subMenu = <SubMenu name={t('Charts')} buttons={subMenuButtons} />
+    chartFilters = filters;
+    chartRenderCard = renderCard;
+  }
+  
   return (
     <>
-      <SubMenu name={t('Charts')} buttons={subMenuButtons} />
+      {subMenu}
       {sliceCurrentlyEditing && (
         <PropertiesModal
           onHide={closeChartEditModal}
@@ -830,11 +843,11 @@ function ChartList(props: ChartListProps) {
               disableBulkSelect={toggleBulkSelect}
               refreshData={refreshData}
               fetchData={fetchData}
-              filters={filters}
+              filters={chartFilters}
               initialSort={initialSort}
               loading={loading}
               pageSize={PAGE_SIZE}
-              renderCard={renderCard}
+              renderCard={chartRenderCard}
               enableBulkTag
               bulkTagResourceName="chart"
               addSuccessToast={addSuccessToast}
