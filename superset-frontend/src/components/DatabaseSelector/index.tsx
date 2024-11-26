@@ -24,6 +24,7 @@ import {
   useRef,
   useCallback,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { styled, SupersetClient, SupersetError, t } from '@superset-ui/core';
 import type { LabeledValue as AntdLabeledValue } from 'antd/lib/select';
 import rison from 'rison';
@@ -39,6 +40,7 @@ import {
   useSchemas,
   SchemaOption,
 } from 'src/hooks/apiResources';
+import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 
 const DatabaseSelectorWrapper = styled.div`
   ${({ theme }) => `
@@ -153,6 +155,12 @@ export default function DatabaseSelector({
   readOnly = false,
   sqlLabMode = false,
 }: DatabaseSelectorProps) {
+
+  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
+  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+    state => state.user,
+  );
+  
   const showCatalogSelector = !!db?.allow_multi_catalog;
   const [currentDb, setCurrentDb] = useState<DatabaseValue | undefined>();
   const [errorPayload, setErrorPayload] = useState<SupersetError | null>();
@@ -209,6 +217,11 @@ export default function DatabaseSelector({
           }
           if (result.length === 0) {
             if (onEmptyResults) onEmptyResults(search);
+          }
+
+          // [GOLDEN_DOMAIN] - Automatically select the last DB
+          if (goldenDomain && result.length > 0 && onDbChange) {
+            onDbChange(result[result.length - 1]);
           }
 
           const options = result.map((row: DatabaseObject, order: number) => ({
@@ -272,6 +285,8 @@ export default function DatabaseSelector({
       setErrorPayload(null);
       if (schemas.length === 1) {
         changeSchema(schemas[0]);
+      } else if (schemas.length > 0 && goldenDomain) {
+        changeSchema(schemas[schemas.length - 1]);
       } else if (
         !schemas.find(schemaOption => schemaRef.current === schemaOption.value)
       ) {
@@ -444,7 +459,7 @@ export default function DatabaseSelector({
   }
 
   return (
-    <DatabaseSelectorWrapper data-test="DatabaseSelector">
+    <DatabaseSelectorWrapper data-test="DatabaseSelector" style={{ display: goldenDomain ? "none" : "block" }}>
       {renderDatabaseSelect()}
       {renderError()}
       {showCatalogSelector && renderCatalogSelect()}
