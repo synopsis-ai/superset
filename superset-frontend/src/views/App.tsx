@@ -68,16 +68,24 @@ const LocationPathnameLogger = () => {
   return <></>;
 };
 
+// [GOLDEN_DOMAIN] - conditionally hide the menu
+let menu = null;
+if (!bootstrapData.user?.goldenDomain) {
+  menu = (
+    <Menu
+      data={bootstrapData.common.menu_data}
+      isFrontendRoute={isFrontendRoute}
+    />
+  );
+}
+
 const App = () => (
   <Router>
     <ScrollToTop />
     <LocationPathnameLogger />
     <RootContextProviders>
       <GlobalStyles />
-      <Menu
-        data={bootstrapData.common.menu_data}
-        isFrontendRoute={isFrontendRoute}
-      />
+      {menu}
       <Switch>
         {routes.map(({ path, Component, props = {}, Fallback = Loading }) => (
           <Route path={path} key={path}>

@@ -117,3 +117,12 @@ try:
     )
 except ImportError:
     logger.info("Using default Docker config...")
+
+
+
+# [GOLDEN DOMAIN] Disable X-Frame-Options header
+# It turns out this isn't necessary, but we can convert this to the AUTH handler later
+from superset.golden_domain.disable_x_frame_options_middleware import DisableXFrameOptionsMiddleware
+ADDITIONAL_MIDDLEWARE = [
+    DisableXFrameOptionsMiddleware
+]
