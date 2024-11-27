@@ -39,7 +39,7 @@ export type User = {
   lastName: string;
   userId?: number; // optional because guest user doesn't have a user id
   username: string;
-  goldenDomain: boolean;
+  goldenDomain?: boolean;
 };
 
 export type UserRoles = Record<string, [string, string][]>;

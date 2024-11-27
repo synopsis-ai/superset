@@ -117,6 +117,10 @@ flask-caching==2.3.0
     # via apache-superset
 flask-compress==1.15
     # via apache-superset
+    
+    # GOLDEN_DOMAIN
+flask-cors==4.0.0
+
 flask-jwt-extended==4.6.0
     # via flask-appbuilder
 flask-limiter==3.7.0
@@ -259,6 +263,10 @@ polyline==2.0.2
     # via apache-superset
 prison==0.2.1
     # via flask-appbuilder
+
+    # GOLDEN_DOMAIN
+psycopg2==2.9.6
+
 prompt-toolkit==3.0.44
     # via click-repl
 pyarrow==14.0.2

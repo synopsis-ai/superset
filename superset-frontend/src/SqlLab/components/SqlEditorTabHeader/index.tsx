@@ -121,7 +121,7 @@ const SqlEditorTabHeader: FC<Props> = ({ queryEditor }) => {
               <IconContainer>
                 <i className="fa fa-cogs" />
               </IconContainer>
-              {qe.hideLeftBar ? t('Expand tool bar') : t('Hide tool bar')}
+              {qe.hideLeftBar ? "Show schemas" : "Hide schemas"}
             </Menu.Item>
             <Menu.Item
               key="4"

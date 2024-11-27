@@ -69,7 +69,7 @@ const LocationPathnameLogger = () => {
 };
 
 // [GOLDEN_DOMAIN] - conditionally hide the menu
-let menu = null;
+let menu: JSX.Element;
 if (!bootstrapData.user?.goldenDomain) {
   menu = (
     <Menu

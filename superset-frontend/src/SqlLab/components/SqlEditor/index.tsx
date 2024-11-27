@@ -128,6 +128,7 @@ import KeyboardShortcutButton, {
   KEY_MAP,
   KeyboardShortcut,
 } from '../KeyboardShortcutButton';
+import { UserWithPermissionsAndRoles } from 'src/types/bootstrapTypes';
 
 const bootstrapData = getBootstrapData();
 const scheduledQueriesConf = bootstrapData?.common?.conf?.SCHEDULED_QUERIES;
@@ -258,6 +259,11 @@ const SqlEditor: FC<Props> = ({
   saveQueryWarning,
   scheduleQueryWarning,
 }) => {
+  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
+  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+    state => state.user,
+  );
+
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -791,6 +797,16 @@ const SqlEditor: FC<Props> = ({
       </Menu>
     );
 
+    // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+    let copyLink = null;
+    if (!goldenDomain) {
+      copyLink = (
+        <span>
+          <ShareSqlLabQuery queryEditorId={queryEditor.id} />
+        </span>
+      );
+    }
+
     return (
       <StyledToolbar className="sql-toolbar" id="js-sql-toolbar">
         {hideActions ? (
@@ -856,9 +872,7 @@ const SqlEditor: FC<Props> = ({
                   database={database}
                 />
               </span>
-              <span>
-                <ShareSqlLabQuery queryEditorId={queryEditor.id} />
-              </span>
+              { copyLink }
               <AntdDropdown overlay={renderDropdown()} trigger={['click']}>
                 <Icons.MoreHoriz iconColor={theme.colors.grayscale.base} />
               </AntdDropdown>
