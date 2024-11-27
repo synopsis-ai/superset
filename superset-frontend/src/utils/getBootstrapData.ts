@@ -23,5 +23,16 @@ import { DEFAULT_BOOTSTRAP_DATA } from 'src/constants';
 export default function getBootstrapData(): BootstrapData {
   const appContainer = document.getElementById('app');
   const dataBootstrap = appContainer?.getAttribute('data-bootstrap');
-  return dataBootstrap ? JSON.parse(dataBootstrap) : DEFAULT_BOOTSTRAP_DATA;
+  const bootstrapData = dataBootstrap ? JSON.parse(dataBootstrap) : DEFAULT_BOOTSTRAP_DATA;
+
+  // [GOLDEN_DOMAIN] - set the golden domain flag when loaded in an iframe
+  // Check if the app is loaded in an iframe
+  if (window.self !== window.top) {
+    bootstrapData.user = {
+      ...bootstrapData.user,
+      goldenDomain: true,
+    };
+  }
+
+  return bootstrapData;
 }

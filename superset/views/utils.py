@@ -90,9 +90,6 @@ def bootstrap_user_data(user: User, include_perms: bool = False) -> dict[str, An
             "isAnonymous": user.is_anonymous,
             "createdOn": user.created_on.isoformat(),
             "email": user.email,
-            # [GOLDEN_DOMAIN] - This needs to only be true for embedded users
-            #   - Maybe this could just be converted to a permission
-            "goldenDomain": True,
         }
 
     if include_perms:

@@ -286,7 +286,12 @@ export default function DatabaseSelector({
       if (schemas.length === 1) {
         changeSchema(schemas[0]);
       } else if (schemas.length > 0 && goldenDomain) {
-        changeSchema(schemas[schemas.length - 1]);
+        const targetSchema = schemas.find(schemaOption => schemaOption.value === 'bloom');
+        if (targetSchema) {
+          changeSchema(targetSchema);
+        } else {
+          changeSchema(schemas[schemas.length - 1]);
+        }
       } else if (
         !schemas.find(schemaOption => schemaRef.current === schemaOption.value)
       ) {
