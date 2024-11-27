@@ -32,6 +32,7 @@ import Menu from 'src/features/home/Menu';
 import getBootstrapData from 'src/utils/getBootstrapData';
 import ToastContainer from 'src/components/MessageToasts/ToastContainer';
 import setupApp from 'src/setup/setupApp';
+import setupGoldenDomain from 'src/setup/setupGoldenDomain';
 import setupPlugins from 'src/setup/setupPlugins';
 import { routes, isFrontendRoute } from 'src/views/routes';
 import { Logger, LOG_ACTIONS_SPA_NAVIGATION } from 'src/logger/LogUtils';
@@ -67,6 +68,11 @@ const LocationPathnameLogger = () => {
   }, [location.pathname]);
   return <></>;
 };
+
+// [GOLDEN_DOMAIN] - setup navigation handling
+if (bootstrapData.user?.goldenDomain) {
+  setupGoldenDomain();
+}
 
 // [GOLDEN_DOMAIN] - conditionally hide the menu
 let menu: JSX.Element;
