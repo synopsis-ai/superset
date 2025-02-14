@@ -141,8 +141,8 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
   user,
 }) => {
 
-  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
-  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [SYNOPSIS] - Use this switch to conditionally change the UI
+  const { synopsis } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
 
@@ -377,13 +377,13 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         Header: t('Database'),
         accessor: 'database.database_name',
         size: 'lg',
-        hidden: goldenDomain,
+        hidden: synopsis,
       },
       {
         Header: t('Schema'),
         accessor: 'schema',
         size: 'lg',
-        hidden: goldenDomain,
+        hidden: synopsis,
       },
       {
         accessor: 'database',
@@ -400,7 +400,7 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
         id: 'owners',
         disableSortBy: true,
         size: 'lg',
-        hidden: goldenDomain,
+        hidden: synopsis,
       },
       {
         Cell: ({
@@ -748,10 +748,10 @@ const DatasetList: FunctionComponent<DatasetListProps> = ({
     );
   };
 
-  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  // [SYNOPSIS] - conditionally hide the subMenu
   let subMenu = null;
   let datasetFilters: Filters = [];
-  if (!goldenDomain) {
+  if (!synopsis) {
     subMenu = <SubMenu {...menuData} />
     datasetFilters = filterTypes;
   }

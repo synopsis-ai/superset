@@ -135,8 +135,8 @@ const DASHBOARD_COLUMNS_TO_FETCH = [
 function DashboardList(props: DashboardListProps) {
   const { addDangerToast, addSuccessToast, user } = props;
 
-  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
-  const { roles, goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [SYNOPSIS] - Use this switch to conditionally change the UI
+  const { roles, synopsis } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
 
@@ -386,7 +386,7 @@ function DashboardList(props: DashboardListProps) {
         accessor: 'owners',
         disableSortBy: true,
         size: 'xl',
-        hidden: goldenDomain
+        hidden: synopsis
       },
       {
         Cell: ({
@@ -702,11 +702,11 @@ function DashboardList(props: DashboardListProps) {
     });
   }
   
-  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  // [SYNOPSIS] - conditionally hide the subMenu
   let subMenu = null;
   let dashboardFilters: Filters = [];
   let dashboardRenderCard: (dashboard: Dashboard) => JSX.Element;
-  if (!goldenDomain) {
+  if (!synopsis) {
     subMenu = <SubMenu name={t('Dashboards')} buttons={subMenuButtons} />
     dashboardFilters = filters;
     dashboardRenderCard = renderCard;

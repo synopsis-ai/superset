@@ -156,8 +156,8 @@ export default function DatabaseSelector({
   sqlLabMode = false,
 }: DatabaseSelectorProps) {
 
-  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
-  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [SYNOPSIS] - Use this switch to conditionally change the UI
+  const { synopsis } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
   
@@ -219,8 +219,8 @@ export default function DatabaseSelector({
             if (onEmptyResults) onEmptyResults(search);
           }
 
-          // [GOLDEN_DOMAIN] - Automatically select the last DB
-          if (goldenDomain && result.length > 0 && onDbChange) {
+          // [SYNOPSIS] - Automatically select the last DB
+          if (synopsis && result.length > 0 && onDbChange) {
             onDbChange(result[result.length - 1]);
           }
 
@@ -285,8 +285,8 @@ export default function DatabaseSelector({
       setErrorPayload(null);
       if (schemas.length === 1) {
         changeSchema(schemas[0]);
-      } else if (schemas.length > 0 && goldenDomain) {
-        const targetSchema = schemas.find(schemaOption => schemaOption.value === 'bloom');
+      } else if (schemas.length > 0 && synopsis) {
+        const targetSchema = schemas.find(schemaOption => schemaOption.value === 'synopsis');
         if (targetSchema) {
           changeSchema(targetSchema);
         } else {
@@ -464,7 +464,7 @@ export default function DatabaseSelector({
   }
 
   return (
-    <DatabaseSelectorWrapper data-test="DatabaseSelector" style={{ display: goldenDomain ? "none" : "block" }}>
+    <DatabaseSelectorWrapper data-test="DatabaseSelector" style={{ display: synopsis ? "none" : "block" }}>
       {renderDatabaseSelect()}
       {renderError()}
       {showCatalogSelector && renderCatalogSelect()}

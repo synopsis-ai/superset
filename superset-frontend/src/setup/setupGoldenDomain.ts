@@ -79,7 +79,7 @@ function handleNavigation(event: MouseEvent) {
   }
 }
 
-export default function setupGoldenDomain() {
+export default function setupSynopsis() {
   document.addEventListener('click', handleNavigation);
 
 

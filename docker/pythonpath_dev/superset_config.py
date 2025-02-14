@@ -120,9 +120,9 @@ except ImportError:
 
 
 
-# [GOLDEN DOMAIN] Disable X-Frame-Options header
+# [SYNOPSIS] Disable X-Frame-Options header
 # It turns out this isn't necessary, but we can convert this to the AUTH handler later
-from superset.golden_domain.disable_x_frame_options_middleware import DisableXFrameOptionsMiddleware
+from superset.synopsis.disable_x_frame_options_middleware import DisableXFrameOptionsMiddleware
 ADDITIONAL_MIDDLEWARE = [
     DisableXFrameOptionsMiddleware
 ]

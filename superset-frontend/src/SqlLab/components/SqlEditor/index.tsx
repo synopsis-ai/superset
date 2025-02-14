@@ -259,8 +259,8 @@ const SqlEditor: FC<Props> = ({
   saveQueryWarning,
   scheduleQueryWarning,
 }) => {
-  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
-  const { goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [SYNOPSIS] - Use this switch to conditionally change the UI
+  const { synopsis } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
 
@@ -797,9 +797,9 @@ const SqlEditor: FC<Props> = ({
       </Menu>
     );
 
-    // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+    // [SYNOPSIS] - conditionally hide the subMenu
     let copyLink = null;
-    if (!goldenDomain) {
+    if (!synopsis) {
       copyLink = (
         <span>
           <ShareSqlLabQuery queryEditorId={queryEditor.id} />

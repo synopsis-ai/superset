@@ -118,7 +118,7 @@ flask-caching==2.3.0
 flask-compress==1.15
     # via apache-superset
     
-    # GOLDEN_DOMAIN
+    # SYNOPSIS
 flask-cors==4.0.0
 
 flask-jwt-extended==4.6.0
@@ -264,7 +264,7 @@ polyline==2.0.2
 prison==0.2.1
     # via flask-appbuilder
 
-    # GOLDEN_DOMAIN
+    # SYNOPSIS
 psycopg2==2.9.6
 
 prompt-toolkit==3.0.44

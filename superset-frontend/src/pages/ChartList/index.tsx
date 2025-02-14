@@ -181,8 +181,8 @@ function ChartList(props: ChartListProps) {
 
   const chartIds = useMemo(() => charts.map(c => c.id), [charts]);
   
-  // [GOLDEN_DOMAIN] - Use this switch to conditionally change the UI
-  const { roles, goldenDomain } = useSelector<any, UserWithPermissionsAndRoles>(
+  // [SYNOPSIS] - Use this switch to conditionally change the UI
+  const { roles, synopsis } = useSelector<any, UserWithPermissionsAndRoles>(
     state => state.user,
   );
   const canReadTag = findPermission('can_read', 'Tag', roles);
@@ -432,7 +432,7 @@ function ChartList(props: ChartListProps) {
         accessor: 'owners',
         disableSortBy: true,
         size: 'xl',
-        hidden: goldenDomain
+        hidden: synopsis
       },
       {
         Cell: ({
@@ -787,11 +787,11 @@ function ChartList(props: ChartListProps) {
     });
   }
 
-  // [GOLDEN_DOMAIN] - conditionally hide the subMenu
+  // [SYNOPSIS] - conditionally hide the subMenu
   let subMenu = null;
   let chartFilters: Filters = [];
   let chartRenderCard: (chart: Chart) => JSX.Element;
-  if (!goldenDomain) {
+  if (!synopsis) {
     subMenu = <SubMenu name={t('Charts')} buttons={subMenuButtons} />
     chartFilters = filters;
     chartRenderCard = renderCard;
